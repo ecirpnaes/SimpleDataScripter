@@ -69,7 +69,7 @@ export class DataScripter {
             let isNull: string = columnInfo[i].allowDBNull ? " NULL" : "";
             let isIdentity: string = columnInfo[i].isIdentity ? " identity" : "";
             let tail: string = (i === columnInfo.length - 1) ? ");" : ",";
-            create.push(`--[${columnInfo[i].columnName}] ${dataType}${isNull}${isIdentity}{${tail}`);
+            create.push(`--[${columnInfo[i].columnName}] ${dataType}${isNull}${isIdentity}${tail}`);
         }
         return create.join("\n");
     }
