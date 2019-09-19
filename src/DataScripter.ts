@@ -3,27 +3,40 @@ import * as azdata from 'azdata';
 export class DataScripter {
     private _resultSet: azdata.SimpleExecuteResult;
     private _tableName: string;
+    private _insertTableDefintionSql: string;
 
     constructor(resultSet: azdata.SimpleExecuteResult, tableName: string) {
         this._tableName = tableName;
         this._resultSet = resultSet;
+        this._insertTableDefintionSql = "";
     }
 
     public Script(): string {
         let scripted: string[] = [];
 
-        // store each row of scripted data in an array
-        for (let i: number = 0; i !== this._resultSet.rowCount; i++) {
-            scripted.push(this.getDataRow(this._resultSet.rows[i], i === this._resultSet.rowCount - 1));
+        // temp table sql
+        scripted.push(this.getTempTableSql());
+
+        // Set identity_insert on if needed
+        if (this.hasIdentityColumn()) {
+            scripted.push(`\nset identity_insert [#temp${this._tableName}] on;\n\n`);
         }
 
-        // do we need to set identity off?
+        // insert into...
+        scripted.push(this.getInsertTableDefinitionSql());
+
+        // now script each row
+        for (let i: number = 0; i !== this._resultSet.rowCount; i++) {
+            scripted.push(this.getDataRow(this._resultSet.rows[i], i, this._resultSet.rowCount));
+        }
+
+        // do we need to set identity_insert on/off?
         if (this.hasIdentityColumn()) {
             scripted.push(`\nset identity_insert [#temp${this._tableName}] off;`);
         }
 
-        // return the temp table, and insert script, separated by line breaks
-        return this.getTempTableSql() + "\n\n" + this.getInsertTableDefinitionSql() + " \n\n" + scripted.join('\n');
+        // return everything separated by line breaks
+        return scripted.join('\n');
     }
 
     // construct the "Insert <tableName> (column1, column2...)" string.
@@ -33,27 +46,27 @@ export class DataScripter {
     // If we were doing "insert into <table> (columns..) values (....)" method on each
     // line, the file size would increase tremendously
     private getInsertTableDefinitionSql(): string {
+
+        // have we built this string already?
+        if (this._insertTableDefintionSql !== "") {
+            return this._insertTableDefintionSql;
+        }
+
         let insert: string[] = [];
-        let identityOn: string = "";
 
         // grab each column from our resultset metadata
         this._resultSet.columnInfo.forEach(column => {
             insert.push(`[${column.columnName}]`);
         });
 
-        // script our identity_insert line if needed
-        if (this.hasIdentityColumn()) {
-            identityOn = `\nset identity_insert [#temp${this._tableName}] on;\n\n`;
-        }
-
         // return the list in "(column1, column2, column2)" format
-        return `${identityOn}insert [#temp${this._tableName}] (${insert.join(",")})`;
+        return this._insertTableDefintionSql = `insert [#temp${this._tableName}] (${insert.join(",")})`;
     }
 
     // do we have an identity column in our resultset?
     private hasIdentityColumn(): boolean {
         return this._resultSet.columnInfo.some(function (column, index, array) {
-            return column.isIdentity;
+            return column && column.isIdentity;
         });
     }
 
@@ -71,7 +84,7 @@ export class DataScripter {
             let tail: string = (i === columnInfo.length - 1) ? ");" : ",";
             create.push(`--[${columnInfo[i].columnName}] ${dataType}${isNull}${isIdentity}${tail}`);
         }
-        return create.join("\n");
+        return create.join("\n") + "\n\n";
     }
 
     // Gets the datatype of the column, formatted for the create table statement
@@ -92,7 +105,7 @@ export class DataScripter {
 
     // scripts the data for each row
     // NOTE: skipping image and binary data. Using NULL as conversion to text makes filesize HUGE
-    private getDataRow(row: azdata.DbCellValue[], isLastRow: boolean): string {
+    private getDataRow(row: azdata.DbCellValue[], currentIndex: number, rowCount: number): string {
         let rowData: string[] = [];
         try {
             for (let i: number = 0; i !== this._resultSet.columnInfo.length; i++) {
@@ -153,7 +166,21 @@ export class DataScripter {
                 throw e;
             }
         }
+
+        let tail = " UNION ALL";
+
+        // Performance issues can arise if there is an extremely large number of rows.
+        // Insert a GO statement every so often. 
+        if ((currentIndex + 1) % 5000 === 0) {
+            tail = `; \nGO\n${this.getInsertTableDefinitionSql()}`;
+        }
+
+        // if it's our last row, close the insert
+        if (currentIndex === rowCount - 1) {
+            tail = ";";
+        }
+
         // return select value1, value2, value...;
-        return "select " + rowData.join(",") + ((isLastRow) ? ";" : " UNION ALL");
+        return "select " + rowData.join(",") + tail;
     }
 }

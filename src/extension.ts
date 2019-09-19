@@ -13,8 +13,8 @@ export function activate(context: vscode.ExtensionContext) {
 
         let tableName: string = `[${oeContext.connectionProfile.databaseName}].[${oeContext.nodeInfo.metadata.schema}].[${oeContext.nodeInfo.metadata.name}]`;
         let options: vscode.InputBoxOptions = {
-            prompt: `Enter your own SQL to select subsets of data. You can use any valid sql syntax. The default is all data in the table but this has serious performance issues for extremely large tables. `,
-            value: 'select * from ' + tableName
+            prompt: `Press [Enter] to accept the default of all data or edit the SQL to select subsets of data. You can use any valid sql syntax. Note that scripting all data in the table can have serious performance issues for extremely large tables. `,
+            value: `select * from ${tableName};`
         };
 
         let sql = await vscode.window.showInputBox(options);

@@ -11,18 +11,18 @@
     },
     "categories": [
         "Other"
-    ],    
+    ],
     "main": "./out/extension",
     "activationEvents": [
         "onCommand:extension.scriptTableData"
     ],
-    "contributes": { 
+    "contributes": {
         "commands": [
             {
                 "command": "extension.scriptTableData",
                 "title": "Script Table Data"
             }
-        ],       
+        ],
         "menus": {
             "objectExplorer/item/context": [
                 {
