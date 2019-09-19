@@ -7,7 +7,7 @@
     "repository": "https://github.com/ecirpnaes/SimpleDataScripter.git",
     "license": "MIT",
     "engines": {
-        "vscode": "^1.38.0",
+        "vscode": "^1.28.0",
         "azdata": "*"
     },
     "categories": [
