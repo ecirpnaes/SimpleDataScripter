@@ -5,6 +5,7 @@
     "version": "0.0.1",
     "publisher": "seanprice",
     "repository": "https://github.com/ecirpnaes/SimpleDataScripter.git",
+    "license": "MIT",
     "engines": {
         "vscode": "^1.38.0",
         "azdata": "*"

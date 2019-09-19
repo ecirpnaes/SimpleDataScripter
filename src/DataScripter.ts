@@ -65,9 +65,10 @@ export class DataScripter {
 
     // do we have an identity column in our resultset?
     private hasIdentityColumn(): boolean {
-        return this._resultSet.columnInfo.some(function (column, index, array) {
-            return column && column.isIdentity;
+        this._resultSet.columnInfo.forEach(function (column) {
+            if (column.isIdentity) { return true; }
         });
+        return false;
     }
 
     // construct a temp table based on the metadata from the resultset
