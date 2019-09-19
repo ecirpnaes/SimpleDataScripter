@@ -1,4 +1,4 @@
-# Azure Data Studio - Simple Data Scripter
+# ![Feature](images/logo.png)Azure Data Studio - Simple Data Scripter
 
 This extension provides a quick and easy way to migrate data between tables by generating insert scripts based on the result sets of a query. It defaults to generating all data from a given table (based on the table selected via a context menu), but the default sql can be modifed to generate subsets of data.
 
