@@ -14,12 +14,12 @@ The data will be scripted to a new SQL Editor window.
 
 ## Known Issues
 
-- This has only been tested with the MSSQL provider, i.e. Microsoft SQL Server. If there are any issues found with other flavors of SQL, (MySql, etc..) please report them at <https://github.com/ecirpnaes/simple-data-scripter/issues>
+- This has only been tested with the MSSQL provider, i.e. Microsoft SQL Server. If there are any issues found with other flavors of SQL, (MySql, etc..) please report them at <https://github.com/ecirpnaes/SimpleDataScripter/issues>
 - Scripting of binary data (binary, varbinary, image) is not currently supported.
 
 ## Unknown Issues
 
-Can be raised here: <https://github.com/ecirpnaes/simple-data-scripter/issues>
+Can be raised here: <https://github.com/ecirpnaes/SimpleDataScripter/issues>
 
 ## Release Notes
 
