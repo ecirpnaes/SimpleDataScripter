@@ -1,4 +1,4 @@
-# ![Feature](images/logo.png)Azure Data Studio - Simple Data Scripter
+# ![Feature](https://raw.githubusercontent.com/ecirpnaes/SimpleDataScripter/master/images/logo.png)Azure Data Studio - Simple Data Scripter
 
 This extension provides a quick and easy way to migrate data between tables by generating insert scripts based on the result sets of a query. It defaults to generating all data from a given table (based on the table selected via a context menu), but the default sql can be modifed to generate subsets of data.
 
@@ -10,7 +10,7 @@ The current release is available to [download as a .vsix file](https://github.co
 
 Right-click on a table node to bring up a [`Script Table Data`] context menu. An input box will open showing the default SQL of selecting all data. You can simply press [Enter] to accept the default or the SQL using a WHERE clause, joins on other tables, etc... Any valid SQL is acceptable. Press [Enter] to run the query.
 The data will be scripted to a new SQL Editor window.
-![Feature](images/Scripting.gif)
+![Feature](https://raw.githubusercontent.com/ecirpnaes/SimpleDataScripter/master/images/Scripting.gif)
 
 ## Known Issues
 
