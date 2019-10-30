@@ -1,7 +1,11 @@
 # Change Log
+
 All notable changes to the "simple-data-scripter" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## 0.1.1
 
-## [Unreleased]
-- Initial release
+- Ensure data retrieval query is run in proper database context
+
+## 0.1.0
+
+- Initial release.

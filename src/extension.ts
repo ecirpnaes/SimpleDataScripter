@@ -23,6 +23,9 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
+        // Ensure that we run this query in the proper context by prepending a "use {database};"
+        sql = `Use [${oeContext.connectionProfile.databaseName}]; ` + sql;
+
         let args: ScriptingArgs = {
             context: oeContext,
             tableName: tableName,
