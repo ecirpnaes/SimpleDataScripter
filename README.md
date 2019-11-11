@@ -8,7 +8,7 @@ The current release is available to [download as a .vsix file](https://github.co
 
 ## Features
 
-Right-click on a table node to bring up a [`Script Table Data`] context menu. An input box will open showing the default SQL of selecting all data. You can simply press [Enter] to accept the default or the SQL using a WHERE clause, joins on other tables, etc... Any valid SQL is acceptable. Press [Enter] to run the query.
+Right-click on a Table or View node to bring up a [`Script Table Data`] context menu. An input box will open showing the default SQL of selecting all data. You can simply press [Enter] to accept the default or the SQL using a WHERE clause, joins on other tables, etc... Any valid SQL is acceptable. Press [Enter] to run the query.
 The data will be scripted to a new SQL Editor window.
 ![Feature](https://raw.githubusercontent.com/ecirpnaes/SimpleDataScripter/master/images/Scripting.gif)
 
@@ -25,7 +25,7 @@ Can be raised here: <https://github.com/ecirpnaes/SimpleDataScripter/issues>
 
 ## 0.1.2
 
-- Enabled scripting context menu on View nodes to enable scripting of View data as well as Table data
+- Show context menu on View nodes to enable scripting of View data as well as Table data
 
 ## 0.1.1
 
