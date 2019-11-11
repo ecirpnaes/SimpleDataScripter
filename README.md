@@ -4,7 +4,7 @@ This extension provides a quick and easy way to migrate data between tables by g
 
 ## Installation
 
-The current release is available to [download as a .vsix file](https://github.com/ecirpnaes/SimpleDataScripter/releases/download/0.1.1/simple-data-scripter-0.1.1.vsix) and can be installed by opening the File Menu and selecting `Install Extension from VSIX Package`
+The current release is available to [download as a .vsix file](https://github.com/ecirpnaes/SimpleDataScripter/releases/download/0.1.2/simple-data-scripter-0.1.2.vsix) and can be installed by opening the File Menu and selecting `Install Extension from VSIX Package`
 
 ## Features
 
@@ -23,9 +23,13 @@ Can be raised here: <https://github.com/ecirpnaes/SimpleDataScripter/issues>
 
 ## Release Notes
 
+## 0.1.2
+
+- Enabled scripting context menu on View nodes to enable scripting of View data as well as Table data
+
 ## 0.1.1
 
-- See ChangeLog.
+- Ensure data retrieval query is run in proper database context
 
 ## 0.1.0
 

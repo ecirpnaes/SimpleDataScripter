@@ -2,7 +2,7 @@
     "name": "simple-data-scripter",
     "displayName": "Simple Data Scripter",
     "description": "Creates insert scripts for a given table",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "seanprice",
     "repository": "https://github.com/ecirpnaes/SimpleDataScripter.git",
     "license": "MIT",
@@ -28,7 +28,7 @@
             "objectExplorer/item/context": [
                 {
                     "command": "extension.scriptTableData",
-                    "when": "connectionProvider == MSSQL && nodeType == Table",
+                    "when": "connectionProvider == MSSQL && nodeType == Table || nodeType == View",
                     "group": "NONE"
                 }
             ]
