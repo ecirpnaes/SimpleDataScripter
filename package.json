@@ -17,7 +17,7 @@
         "Script",
         "Insert",
         "SQL"
-      ],
+    ],
     "main": "./out/extension",
     "activationEvents": [
         "onCommand:extension.scriptTableData"
