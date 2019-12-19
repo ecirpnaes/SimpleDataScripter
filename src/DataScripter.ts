@@ -4,11 +4,12 @@ export class DataScripter {
     private _resultSet: azdata.SimpleExecuteResult;
     private _tableName: string;
     private _insertTableDefintionSql: string;
+    private _datatypes: string[] = [];
 
     constructor(resultSet: azdata.SimpleExecuteResult, tableName: string) {
         this._tableName = tableName;
         this._resultSet = resultSet;
-        this._insertTableDefintionSql = "";
+        this._insertTableDefintionSql = "";        
     }
 
     public Script(): string {
@@ -65,9 +66,9 @@ export class DataScripter {
 
     // do we have an identity column in our resultset?
     private hasIdentityColumn(): boolean {
-        this._resultSet.columnInfo.forEach(function (column) {
-            if (column.isIdentity) { return true; }
-        });
+        for (let i: number = 0; i !== this._resultSet.columnInfo.length; i++) {
+            if (this._resultSet.columnInfo[i].isIdentity) { return true; }
+        }
         return false;
     }
 
@@ -90,22 +91,34 @@ export class DataScripter {
 
     // Gets the datatype of the column, formatted for the create table statement
     private getDataType(columnInfo: azdata.IDbColumn): string {
+
+        // save the datatype name into our internal array
+        // we do this because we need the base name for UDTs
+        this._datatypes.push(columnInfo.dataTypeName);
+
         // does anyone still use (n)text datatypes? // (n)varchar(200)
-        if (columnInfo.dataTypeName.indexOf("char") >= 0 || columnInfo.dataTypeName.indexOf("text") >= 0) {
+        if (columnInfo.dataTypeName.indexOf("char") >= 0 || columnInfo.dataTypeName.indexOf("text") >= 0) {            
             return `[${columnInfo.dataTypeName}] (${columnInfo.columnSize === 2147483647 ? "max" : columnInfo.columnSize})`;
         }
 
         // decimal (18,4), numeric(3,4)
-        if (columnInfo.dataTypeName === "decimal" || columnInfo.dataTypeName === "numeric") {
+        if (columnInfo.dataTypeName === "decimal" || columnInfo.dataTypeName === "numeric") {            
             return `[${columnInfo.dataTypeName}] (${columnInfo.numericPrecision},${columnInfo.numericScale})`;
         }
 
-        // everything else. 
+        // geometry
+        if (columnInfo.dataTypeName.indexOf("geometry") >= 0) {
+            // need to overwrite the dataType name with the actual type for geometry
+            this._datatypes[this._datatypes.length - 1] = "geometry";
+            return "geometry";
+        }
+
+        // everything else.         
         return `[${columnInfo.dataTypeName}]`;
     }
 
     // scripts the data for each row
-    // NOTE: skipping image and binary data. Using NULL as conversion to text makes filesize HUGE
+    // NOTE: skipping image and binary data. Inserting NULL instead as conversion to text makes filesize HUGE
     private getDataRow(row: azdata.DbCellValue[], currentIndex: number, rowCount: number): string {
         let rowData: string[] = [];
         try {
@@ -114,7 +127,7 @@ export class DataScripter {
                     rowData.push("NULL");
                     continue;
                 }
-                switch (this._resultSet.columnInfo[i].dataTypeName) {
+                switch (this._datatypes[i]) {
                     case "varchar":
                     case "nvarchar":
                     case "char":
@@ -142,6 +155,7 @@ export class DataScripter {
                     case "numeric":
                     case "real":
                     case "float":
+                    case "geometry":
                         rowData.push(row[i].displayValue);
                         break;
                     case "uniqueidentifier":

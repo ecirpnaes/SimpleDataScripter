@@ -21,16 +21,12 @@ The data will be scripted to a new SQL Editor window.
 
 Can be raised here: <https://github.com/ecirpnaes/SimpleDataScripter/issues>
 
-## Release Notes
+## Releases
 
-## 0.1.2
+### Current Version - 0.1.3
 
-- Show context menu on View nodes to enable scripting of View data as well as Table data
+## Change Log
 
-## 0.1.1
+Can be found here: <https://raw.githubusercontent.com/ecirpnaes/SimpleDataScripter/master/CHANGELOG.md>
 
-- Ensure data retrieval query is run in proper database context
 
-## 0.1.0
-
-- Initial release.

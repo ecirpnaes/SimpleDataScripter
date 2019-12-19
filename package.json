@@ -2,7 +2,7 @@
     "name": "simple-data-scripter",
     "displayName": "Simple Data Scripter",
     "description": "Creates insert scripts for a given table",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "publisher": "seanprice",
     "repository": "https://github.com/ecirpnaes/SimpleDataScripter.git",
     "license": "MIT",
@@ -13,6 +13,11 @@
     "categories": [
         "Other"
     ],
+    "keywords": [
+        "Script",
+        "Insert",
+        "SQL"
+      ],
     "main": "./out/extension",
     "activationEvents": [
         "onCommand:extension.scriptTableData"
