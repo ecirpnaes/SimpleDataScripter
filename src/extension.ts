@@ -1,7 +1,7 @@
 'use strict';
 
-import * as vscode from 'vscode';
 import * as azdata from 'azdata';
+import * as vscode from 'vscode';
 import { DataScripter } from './DataScripter';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -55,7 +55,8 @@ async function scriptData(backgroundOperation: azdata.BackgroundOperation, args:
     }
 
     let connectionUri: string = await azdata.connection.getUriForConnection(connectionResult.connectionId);
-    let queryProvider = azdata.dataprotocol.getProvider<azdata.QueryProvider>("MSSQL", azdata.DataProviderType.QueryProvider);
+    let providerId: string = args.context.connectionProfile.providerName;
+    let queryProvider = azdata.dataprotocol.getProvider<azdata.QueryProvider>(providerId, azdata.DataProviderType.QueryProvider);
 
     backgroundOperation.updateStatus(azdata.TaskStatus.InProgress, "Getting records...");
 
