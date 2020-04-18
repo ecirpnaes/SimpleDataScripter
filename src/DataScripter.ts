@@ -144,17 +144,19 @@ export class DataScripter {
                     case "time":
                         rowData.push(`'${row[i].displayValue}'`);
                         break;
-                    case "bit":
-                    case "decimal":
-                    case "money":
-                    case "smallmoney":
-                    case "int":
-                    case "bigint":
-                    case "smallint":
-                    case "tinyint":
+                    case "decimal": // some collations use a comma for decimal places vs a period
                     case "numeric":
                     case "real":
                     case "float":
+                    case "money":
+                    case "smallmoney":
+                        rowData.push(row[i].displayValue.replace(",", "."));
+                        break;
+                    case "bit":                 
+                    case "int":
+                    case "bigint":
+                    case "smallint":
+                    case "tinyint":                   
                     case "geometry":
                         rowData.push(row[i].displayValue);
                         break;
