@@ -2,7 +2,7 @@
     "name": "simple-data-scripter",
     "displayName": "Simple Data Scripter",
     "description": "Creates insert scripts for a given table",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "publisher": "seanprice",
     "repository": "https://github.com/ecirpnaes/SimpleDataScripter.git",
     "license": "MIT",
