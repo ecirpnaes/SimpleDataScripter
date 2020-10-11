@@ -4,7 +4,7 @@ This extension provides a quick and easy way to migrate data between tables by g
 
 ## Installation
 
-The current release is available to [download as a .vsix file](https://github.com/ecirpnaes/SimpleDataScripter/releases/download/0.1.3/simple-data-scripter-0.1.3.vsix) and can be installed by opening the File Menu and selecting `Install Extension from VSIX Package`
+The current release is available to [download as a .vsix file](https://github.com/ecirpnaes/SimpleDataScripter/releases/download/0.1.5/simple-data-scripter-0.1.5.vsix) and can be installed by opening the File Menu and selecting `Install Extension from VSIX Package`
 
 ## Features
 
@@ -23,10 +23,8 @@ Can be raised here: <https://github.com/ecirpnaes/SimpleDataScripter/issues>
 
 ## Releases
 
-### Current Version - 0.1.3
+### Current Version - 0.1.5
 
 ## Change Log
 
 Can be found here: <https://raw.githubusercontent.com/ecirpnaes/SimpleDataScripter/master/CHANGELOG.md>
-
-
