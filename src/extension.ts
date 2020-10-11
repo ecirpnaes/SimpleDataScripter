@@ -23,9 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        // Ensure that we run this query in the proper context by prepending a "use {database};"
-        sql = `Use [${oeContext.connectionProfile.databaseName}]; ` + sql;
-
         let args: ScriptingArgs = {
             context: oeContext,
             tableName: tableName,
@@ -49,16 +46,26 @@ export function activate(context: vscode.ExtensionContext) {
 async function scriptData(backgroundOperation: azdata.BackgroundOperation, args: ScriptingArgs) {
     let connectionResult: azdata.ConnectionResult = await azdata.connection.connect(args.context.connectionProfile, false, false);
     if (!connectionResult.connected) {
-        backgroundOperation.updateStatus(azdata.TaskStatus.Failed, "Could not connect to database");
+        backgroundOperation.updateStatus(azdata.TaskStatus.Failed, "Could not connect to database server");
         vscode.window.showErrorMessage(connectionResult.errorMessage);
         return;
     }
 
     let connectionUri: string = await azdata.connection.getUriForConnection(connectionResult.connectionId);
     let providerId: string = args.context.connectionProfile.providerName;
+    let databaseName = args.context.connectionProfile.databaseName;
+    
+    let connectionProvider = azdata.dataprotocol.getProvider<azdata.ConnectionProvider>(providerId, azdata.DataProviderType.ConnectionProvider);
     let queryProvider = azdata.dataprotocol.getProvider<azdata.QueryProvider>(providerId, azdata.DataProviderType.QueryProvider);
-
+    
     backgroundOperation.updateStatus(azdata.TaskStatus.InProgress, "Getting records...");
+
+    var changeDatabaseResults = await connectionProvider.changeDatabase(connectionUri, databaseName);
+    if (!changeDatabaseResults) {
+        backgroundOperation.updateStatus(azdata.TaskStatus.Failed, `Could not switch to [${databaseName}] database`);
+        vscode.window.showErrorMessage(connectionResult.errorMessage);
+        return;
+    }
 
     queryProvider.runQueryAndReturn(connectionUri, args.sqlString).then(
         function (results) {
@@ -79,7 +86,7 @@ async function scriptData(backgroundOperation: azdata.BackgroundOperation, args:
             });
         },
         function (error) {
-            let message = (error instanceof Error) ? error.message : "There was an error retrieving data!";
+            let message = (error instanceof Error) ? error.message : "There was an unknown error retrieving data";
             backgroundOperation.updateStatus(azdata.TaskStatus.Failed, message);
             vscode.window.showErrorMessage(message);
         });
