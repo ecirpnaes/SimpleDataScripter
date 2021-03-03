@@ -97,7 +97,9 @@ export class DataScripter {
         this._datatypes.push(columnInfo.dataTypeName);
 
         // does anyone still use (n)text datatypes? // (n)varchar(200)
-        if (columnInfo.dataTypeName.indexOf("char") >= 0 || columnInfo.dataTypeName.indexOf("text") >= 0) {            
+        if (columnInfo.dataTypeName.indexOf("char") >= 0 || 
+            columnInfo.dataTypeName.indexOf("text") >= 0 || 
+            columnInfo.dataTypeName.indexOf("binary") >= 0 ) {            
             return `[${columnInfo.dataTypeName}] (${columnInfo.columnSize === 2147483647 ? "max" : columnInfo.columnSize})`;
         }
 
@@ -167,7 +169,9 @@ export class DataScripter {
                     case "image":
                     case "timestamp":
                     case "varbinary":
-                        rowData.push("NULL");
+                        //rowData.push(row[i].displayValue => row[i].displayValue.map(byte => String.fromCharCode(parseInt(byte, 2))).join(''));
+                        rowData.push(row[i].displayValue);
+                        //rowData.push("NULL");
                         break;
                     default:
                         rowData.push(`'${row[i].displayValue}'`);
