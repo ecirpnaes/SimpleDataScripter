@@ -13,7 +13,7 @@ export class DataScripter {
     }
 
     public Script(): string {
-        let scripted: string[] = [];
+        const scripted: string[] = [];
 
         // temp table sql
         scripted.push(this.getTempTableSql());
@@ -27,7 +27,7 @@ export class DataScripter {
         scripted.push(this.getInsertTableDefinitionSql());
 
         // now script each row
-        for (let i: number = 0; i !== this._resultSet.rowCount; i++) {
+        for (let i = 0; i !== this._resultSet.rowCount; i++) {
             scripted.push(this.getDataRow(this._resultSet.rows[i], i, this._resultSet.rowCount));
         }
 
@@ -53,7 +53,7 @@ export class DataScripter {
             return this._insertTableDefintionSql;
         }
 
-        let insert: string[] = [];
+        const insert: string[] = [];
 
         // grab each column from our resultset metadata
         this._resultSet.columnInfo.forEach(column => {
@@ -66,7 +66,7 @@ export class DataScripter {
 
     // do we have an identity column in our resultset?
     private hasIdentityColumn(): boolean {
-        for (let i: number = 0; i !== this._resultSet.columnInfo.length; i++) {
+        for (let i = 0; i !== this._resultSet.columnInfo.length; i++) {
             if (this._resultSet.columnInfo[i].isIdentity) { return true; }
         }
         return false;
@@ -75,15 +75,15 @@ export class DataScripter {
     // construct a temp table based on the metadata from the resultset
     // we comment this out by default
     private getTempTableSql(): string {
-        let columnInfo: azdata.IDbColumn[] = this._resultSet.columnInfo;
-        let create: string[] = [];
+        const columnInfo: azdata.IDbColumn[] = this._resultSet.columnInfo;
+        const create: string[] = [];
         create.push(`--create table [#temp${this._tableName}] (`);
 
-        for (let i: number = 0; i !== columnInfo.length; i++) {
-            let dataType: string = this.getDataType(columnInfo[i]);
-            let isNull: string = columnInfo[i].allowDBNull ? " NULL" : "";
-            let isIdentity: string = columnInfo[i].isIdentity ? " identity" : "";
-            let tail: string = (i === columnInfo.length - 1) ? ");" : ",";
+        for (let i = 0; i !== columnInfo.length; i++) {
+            const dataType: string = this.getDataType(columnInfo[i]);
+            const isNull: string = columnInfo[i].allowDBNull ? " NULL" : "";
+            const isIdentity: string = columnInfo[i].isIdentity ? " identity" : "";
+            const tail: string = (i === columnInfo.length - 1) ? ");" : ",";
             create.push(`--[${columnInfo[i].columnName}] ${dataType}${isNull}${isIdentity}${tail}`);
         }
         return create.join("\n") + "\n\n";
@@ -122,9 +122,9 @@ export class DataScripter {
     // scripts the data for each row
     // NOTE: skipping image and binary data. Inserting NULL instead as conversion to text makes filesize HUGE
     private getDataRow(row: azdata.DbCellValue[], currentIndex: number, rowCount: number): string {
-        let rowData: string[] = [];
+        const rowData: string[] = [];
         try {
-            for (let i: number = 0; i !== this._resultSet.columnInfo.length; i++) {
+            for (let i = 0; i !== this._resultSet.columnInfo.length; i++) {
                 if (row[i].isNull) {
                     rowData.push("NULL");
                     continue;
