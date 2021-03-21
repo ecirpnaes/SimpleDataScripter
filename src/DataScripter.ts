@@ -119,6 +119,10 @@ export class DataScripter {
         return `[${columnInfo.dataTypeName}]`;
     }
 
+    private escapeSingleQuotes(displayValue: string) {
+        return displayValue.replace(/'+/g, "''")
+    }
+
     // scripts the data for each row
     // NOTE: skipping image and binary data. Inserting NULL instead as conversion to text makes filesize HUGE
     private getDataRow(row: azdata.DbCellValue[], currentIndex: number, rowCount: number): string {
@@ -130,14 +134,16 @@ export class DataScripter {
                     continue;
                 }
                 switch (this._datatypes[i]) {
-                    case "varchar":
                     case "nvarchar":
                     case "char":
                     case "nchar":
-                    case "text":
                     case "ntext":
+                        rowData.push(`N'${this.escapeSingleQuotes(row[i].displayValue)}'`);
+                        break;
+                    case "varchar":
+                    case "text":
                     case "xml":
-                        rowData.push(`'${row[i].displayValue.replace(/'+/g, "''")}'`);
+                        rowData.push(`'${this.escapeSingleQuotes(row[i].displayValue)}'`);
                         break;
                     case "date":
                     case "datetime":
