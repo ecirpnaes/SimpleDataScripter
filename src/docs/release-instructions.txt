@@ -1,0 +1,14 @@
+1) Update version number in package.json.
+2) Run vsce package to create .vsix file.
+3) On Github navigate to the Release page and click Draft a new release.
+4) Enter a tag version and a release name.
+5) Upload the vsix file using the attach binaries button.
+6) Navigate to  https://github.com/Microsoft/sqlopsstudio/tree/release/extensions
+7) Click the Fork button in the top-right and fork to your own Github account.
+8) Go to your new fork and make sure you’re on the release/extensions branch.
+9) Edit the extensionsGallery.json file to reflect the new verion number and update dates. 
+    -- Use the local /docs/pullRequest.json file as a template.
+10) Commit your changes to your file so it’s now in your fork. (Commit directly to the release/extensions branch)
+11) go back to the release/extension branch page on your fork you’ll see a Compare & pull request button — click this to submit the PR.
+12) Click Create pull request
+13) Refer to the html page in the docs folder for more instructions

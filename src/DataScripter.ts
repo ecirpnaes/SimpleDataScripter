@@ -124,7 +124,6 @@ export class DataScripter {
     }
 
     // scripts the data for each row
-    // NOTE: skipping image and binary data. Inserting NULL instead as conversion to text makes filesize HUGE
     private getDataRow(row: azdata.DbCellValue[], currentIndex: number, rowCount: number): string {
         let rowData: string[] = [];
         try {
