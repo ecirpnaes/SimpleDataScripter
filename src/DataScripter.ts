@@ -161,22 +161,20 @@ export class DataScripter {
                         // some collations use a comma for decimal places vs a period
                         rowData.push(row[i].displayValue.replace(",", "."));
                         break;
+                    case "uniqueidentifier":
+                        rowData.push(`'{${row[i].displayValue}}'`);
+                        break;
                     case "bit":
                     case "int":
                     case "bigint":
                     case "smallint":
                     case "tinyint":
-                    case "geometry":
-                        rowData.push(row[i].displayValue);
-                        break;
-                    case "uniqueidentifier":
-                        rowData.push(`'{${row[i].displayValue}}'`);
-                        break;
+                    case "geometry":                  
                     case "binary":
                     case "image":
                     case "timestamp":
                     case "varbinary":
-                        rowData.push("NULL");
+                        rowData.push(row[i].displayValue);
                         break;
                     default:
                         rowData.push(`'${row[i].displayValue}'`);
