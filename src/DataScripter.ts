@@ -9,7 +9,7 @@ export class DataScripter {
     constructor(resultSet: azdata.SimpleExecuteResult, tableName: string) {
         this._tableName = tableName;
         this._resultSet = resultSet;
-        this._insertTableDefintionSql = "";        
+        this._insertTableDefintionSql = "";
     }
 
     public Script(): string {
@@ -97,14 +97,14 @@ export class DataScripter {
         this._datatypes.push(columnInfo.dataTypeName);
 
         // does anyone still use (n)text datatypes? // (n)varchar(200)
-        if (columnInfo.dataTypeName.indexOf("char") >= 0 || 
-            columnInfo.dataTypeName.indexOf("text") >= 0 || 
-            columnInfo.dataTypeName.indexOf("binary") >= 0 ) {            
+        if (columnInfo.dataTypeName.indexOf("char") >= 0 ||
+            columnInfo.dataTypeName.indexOf("text") >= 0 ||
+            columnInfo.dataTypeName.indexOf("binary") >= 0) {
             return `[${columnInfo.dataTypeName}] (${columnInfo.columnSize === 2147483647 ? "max" : columnInfo.columnSize})`;
         }
 
         // decimal (18,4), numeric(3,4)
-        if (columnInfo.dataTypeName === "decimal" || columnInfo.dataTypeName === "numeric") {            
+        if (columnInfo.dataTypeName === "decimal" || columnInfo.dataTypeName === "numeric") {
             return `[${columnInfo.dataTypeName}] (${columnInfo.numericPrecision},${columnInfo.numericScale})`;
         }
 
@@ -119,6 +119,10 @@ export class DataScripter {
         return `[${columnInfo.dataTypeName}]`;
     }
 
+    private escapeQuotes(input: string) : string {
+        return input.replace(/'+/g, "''");
+    }
+
     // scripts the data for each row
     // NOTE: skipping image and binary data. Inserting NULL instead as conversion to text makes filesize HUGE
     private getDataRow(row: azdata.DbCellValue[], currentIndex: number, rowCount: number): string {
@@ -131,13 +135,15 @@ export class DataScripter {
                 }
                 switch (this._datatypes[i]) {
                     case "varchar":
-                    case "nvarchar":
                     case "char":
-                    case "nchar":
                     case "text":
-                    case "ntext":
                     case "xml":
-                        rowData.push(`'${row[i].displayValue.replace(/'+/g, "''")}'`);
+                        rowData.push(`'${this.escapeQuotes(row[i].displayValue)}'`);
+                        break;
+                    case "nvarchar": 
+                    case "ntext": 
+                    case "nchar":
+                        rowData.push(`N'${this.escapeQuotes(row[i].displayValue)}'`);
                         break;
                     case "date":
                     case "datetime":
@@ -146,19 +152,20 @@ export class DataScripter {
                     case "time":
                         rowData.push(`'${row[i].displayValue}'`);
                         break;
-                    case "decimal": // some collations use a comma for decimal places vs a period
+                    case "decimal": 
                     case "numeric":
                     case "real":
                     case "float":
                     case "money":
                     case "smallmoney":
+                        // some collations use a comma for decimal places vs a period
                         rowData.push(row[i].displayValue.replace(",", "."));
                         break;
-                    case "bit":                 
+                    case "bit":
                     case "int":
                     case "bigint":
                     case "smallint":
-                    case "tinyint":                   
+                    case "tinyint":
                     case "geometry":
                         rowData.push(row[i].displayValue);
                         break;
@@ -169,9 +176,7 @@ export class DataScripter {
                     case "image":
                     case "timestamp":
                     case "varbinary":
-                        //rowData.push(row[i].displayValue => row[i].displayValue.map(byte => String.fromCharCode(parseInt(byte, 2))).join(''));
-                        rowData.push(row[i].displayValue);
-                        //rowData.push("NULL");
+                        rowData.push("NULL");
                         break;
                     default:
                         rowData.push(`'${row[i].displayValue}'`);
