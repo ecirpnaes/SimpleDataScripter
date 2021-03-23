@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.6
+
+- Bug Fix: Add 'N' in front of unicode fields. (nchar, nvarchar, ntext)
+- Feathure: Added support for BLOB fields. (varbinary, image)
+
 ## 0.1.5
 
 - Bug Fix: Fix export of data from a MFA-enabled connection not specifying the database name.
