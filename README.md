@@ -4,7 +4,7 @@ This extension provides a quick and easy way to migrate data between tables by g
 
 ## Installation
 
-The current release is available to [download as a .vsix file](https://github.com/ecirpnaes/SimpleDataScripter/releases/download/0.1.5/simple-data-scripter-0.1.5.vsix) and can be installed by opening the File Menu and selecting `Install Extension from VSIX Package`
+The current release is available to [download as a .vsix file](https://github.com/ecirpnaes/SimpleDataScripter/releases/download/0.1.6/simple-data-scripter-0.1.6.vsix) and can be installed by opening the File Menu and selecting `Install Extension from VSIX Package`
 
 ## Features
 
@@ -14,8 +14,7 @@ The data will be scripted to a new SQL Editor window.
 
 ## Known Issues
 
-- This has only been tested with the MSSQL provider, i.e. Microsoft SQL Server. If there are any issues found with other flavors of SQL, (MySql, etc..) please report them at <https://github.com/ecirpnaes/SimpleDataScripter/issues>
-- Scripting of binary data (binary, varbinary, image) is not currently supported.
+- This has only been tested with the MSSQL provider, i.e. Microsoft SQL Server.
 
 ## Unknown Issues
 
@@ -23,7 +22,7 @@ Can be raised here: <https://github.com/ecirpnaes/SimpleDataScripter/issues>
 
 ## Releases
 
-### Current Version - 0.1.5
+### Current Version - 0.1.6
 
 ## Change Log
 
